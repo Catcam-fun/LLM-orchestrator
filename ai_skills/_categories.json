@@ -1,0 +1,18 @@
+{
+  "_purpose": "Canonical list of skill categories. The learning phase MUST classify each completed task into one of these categories (or 'none' if the task didn't surface reusable abstract knowledge). Each category accumulates lessons from multiple tasks over time — skills update, they do not multiply. When new categories are needed, ADD them here first; the LLM will only pick from this list.",
+  "_format": "key = kebab-case category name; value = one-paragraph description of what kinds of tasks/lessons belong in that category",
+  "categories": {
+    "cli-patterns": "How to add and structure subcommands in vault.py / scripts/vault_graph/cli.py. Argument parsing, output formatting, exit codes, integration with the existing argparse setup. Anything about extending the vault command surface.",
+    "frontend-ui": "Building UIs in code/vault-ui or any other React/Vite/Tailwind front-end. Component design, state management, dark mode, drag-and-drop, accessibility, polling vs WebSocket data flow, responsive layout.",
+    "backend-services": "Flask backends, REST endpoint design, WebSocket push, file watchers, cross-origin handling for localhost, JSON serialization of vault state files. Anything that turns the vault's markdown/JSONL state into a programmatic API.",
+    "file-io-and-state": "Atomic writes (tmp + replace), JSONL append/rotation, YAML frontmatter parsing, on-disk schema design, file locking. Patterns for safely reading/writing vault state files without races or partial-write corruption.",
+    "model-routing": "Provider selection (claude/gemini/codex), variable model routing via _routeModel, exploration vs exploitation tradeoffs, quota-ban TTLs, recency-weighted ranking, drift detection. The mechanics of which model to call and why.",
+    "testing-and-verification": "Behavioral regression tests in vault_graph_audit.py, smoke tests, self-test enforcement of locked blocks, snapshot/restore patterns, CI flag design, JUnit-style output.",
+    "documentation": "Writing docs/*.md, mermaid diagrams of state machines, frontmatter field references, troubleshooting guides. How to keep docs in sync with code without drift.",
+    "windows-platform-quirks": "Windows-specific gotchas: cp1252 encoding trap on subprocess and read_text/write_text, command-line arg truncation forcing stdin for claude/codex, taskkill /T for tree-kill, npm .cmd vs .exe resolution, PowerShell quoting differences.",
+    "subprocess-and-cli-integration": "Wrapping external CLIs (claude/gemini/codex) safely. Env scrubbing for OAuth-vs-API-key isolation, stdin vs arg delivery, timeout and tree-kill, output stripping for noisy CLIs (codex session header), refusal/rate-limit detection patterns.",
+    "adaptive-learning": "How the vault improves itself: skill effectiveness tracking, per-task learning extraction, model performance logging, routing parameter updates, core memory accumulation. Meta-features about the system learning from its own runs.",
+    "error-handling-strategy": "Standardized error message formatting, specific vs broad except clauses, failure_mode logging conventions, non-fatal vs fatal failure decisions, retry logic. How the vault treats and surfaces errors consistently.",
+    "vault-infrastructure": "Daemon health, supervisor agents, scheduling, log rotation, backups, snooze/rerun semantics, checkpoint restoration. Operational concerns about keeping the vault running."
+  }
+}

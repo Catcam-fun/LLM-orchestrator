@@ -1,0 +1,18 @@
+views:
+  - type: table
+    name: Table
+    filters:
+      and:
+        - file.folder == "task_files"
+        - status != "complete"
+        - status != "closed"
+        - status != "completed"
+    order:
+      - file.name
+      - title
+      - status
+      - app_location
+    columnSize:
+      file.name: 195
+      note.title: 245
+      note.status: 207

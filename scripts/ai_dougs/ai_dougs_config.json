@@ -1,0 +1,21 @@
+{
+  "sendAiRequests": true,
+  "aiProvider": "claude",
+  "aiModel": "",
+  "aiProviderOrder": [
+    {
+      "provider": "claude",
+      "model": "variable"
+    },
+    {
+      "provider": "codex",
+      "model": "variable"
+    },
+    {
+      "provider": "gemini",
+      "model": "variable"
+    }
+  ],
+  "captureToMemory": true,
+  "taskFilesFolder": "task_files"
+}

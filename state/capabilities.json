@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "version": 1,
+  "updated": "2026-05-12",
+  "description": "Pre-approved library registry. Agents pick FROM this list; they do NOT autonomously add new entries. To approve a new library, the user (or orchestrator on user direction) edits this file directly. The vault's role is to maintain the list; per-project installation happens at task-execution time only for libraries the agent decides the task actually needs.",
+  "policy": {
+    "agent_can_choose_from_list": true,
+    "agent_can_add_to_list": false,
+    "agent_can_install_outside_list": false,
+    "install_scope": "per-task \u2014 only what the current task requires lands in the project's package.json",
+    "version_pinning": "ranges set here travel cross-machine via the vault repo; each project's package.json captures the resolved version when first installed for that project",
+    "cross_machine_sync": "this file is vault-tracked, so cloning the vault gives the new machine the same approved registry. Each user-project (under code/<project>/ or external) carries its own package.json/lock that records what it actually installed."
+  },
+  "categories": {
+    "frontend.styling": "CSS frameworks, design-token systems, utility-first styling",
+    "frontend.components": "Component primitives and pre-built UI kits",
+    "frontend.animation": "Motion, transitions, gestures, layout animation",
+    "frontend.3d": "WebGL, Three.js, declarative 3D",
+    "frontend.icons": "Icon sets",
+    "frontend.theming": "Theme switching, dark/light mode, theme tokens",
+    "frontend.forms": "Form state, validation",
+    "frontend.utilities": "Class-name composition, helpers",
+    "frontend.charts": "Charting and data visualization libraries"
+  },
+  "packages": {
+    "tailwindcss": {
+      "ecosystem": "npm",
+      "version": "^3.4.19",
+      "categories": [
+        "frontend.styling"
+      ],
+      "install_dev": true,
+      "purpose": "Utility-first CSS framework. Pick when the project has no existing CSS framework, or when a broad restyle is in scope. Works on CRA, Next.js, Vite, plain HTML.",
+      "co_install": [
+        "postcss",
+        "autoprefixer",
+        "@tailwindcss/typography"
+      ],
+      "setup_steps": [
+        "npm install --save-dev tailwindcss@^3 postcss autoprefixer @tailwindcss/typography",
+        "Create tailwind.config.js with content paths pointing at src/**/*.{js,jsx,ts,tsx} and public/index.html (CRA) or app/** (Next.js).",
+        "Create postcss.config.js with tailwindcss + autoprefixer plugins.",
+        "Add @tailwind base/components/utilities directives at the top of the CSS entry file (e.g. src/index.css).",
+        "darkMode: ['class'] in tailwind config if dark-mode toggling is in scope."
+      ],
+      "incompatible_with": []
+    },
+    "postcss": {
+      "ecosystem": "npm",
+      "version": "^8.5.14",
+      "categories": [
+        "frontend.styling"
+      ],
+      "install_dev": true,
+      "purpose": "Required by Tailwind. Pulled in as a peer of tailwindcss.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "autoprefixer": {
+      "ecosystem": "npm",
+      "version": "^10.5.0",
+      "categories": [
+        "frontend.styling"
+      ],
+      "install_dev": true,
+      "purpose": "Required by Tailwind. Pulled in as a peer of tailwindcss.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@tailwindcss/typography": {
+      "ecosystem": "npm",
+      "version": "^0.5",
+      "categories": [
+        "frontend.styling"
+      ],
+      "install_dev": true,
+      "purpose": "Typography plugin for Tailwind. Useful for content-heavy pages (marketing, docs).",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "shadcn": {
+      "ecosystem": "shadcn",
+      "version": "^4",
+      "categories": [
+        "frontend.components"
+      ],
+      "install_dev": false,
+      "purpose": "Copy-paste component library built on Radix primitives + Tailwind. Use for distinctive, accessible UI primitives (Button, Dialog, Dropdown, Input, etc.). Components live in the project under src/components/ui/, not in node_modules \u2014 they're code you own and can modify.",
+      "co_install": [],
+      "requires_categories": [
+        "frontend.styling"
+      ],
+      "setup_steps": [
+        "Requires Tailwind installed + configured first.",
+        "Create jsconfig.json (or tsconfig.json) with baseUrl 'src' and paths { '@/*': ['./*'] }.",
+        "Create components.json at project root with the standard shadcn schema (style: 'default', tailwind config path, css path, baseColor: 'neutral' or 'zinc', cssVariables: true, aliases components='@/components', utils='@/lib/utils').",
+        "Create src/lib/utils.js with the cn() helper that does twMerge(clsx(...)).",
+        "Add Tailwind CSS variables for the theme (e.g. --background, --foreground, --primary, etc.) at the top of src/index.css.",
+        "Then 'npx shadcn@latest add <component>' (e.g. button, dialog, dropdown-menu, input) to install individual components."
+      ],
+      "incompatible_with": []
+    },
+    "framer-motion": {
+      "ecosystem": "npm",
+      "version": "^12",
+      "categories": [
+        "frontend.animation"
+      ],
+      "install_dev": false,
+      "purpose": "Declarative animation library for React. Page transitions, layout animation (auto-animate-on-content-change), gesture support, scroll-driven animation. Pick this when a redesign promises 'motion' or 'moving parts'.",
+      "co_install": [],
+      "setup_steps": [
+        "npm install framer-motion",
+        "Wrap animated elements in <motion.div>, <motion.button>, etc.",
+        "Use initial/animate/exit props for entrance/exit; layout prop for FLIP-style auto-layout; whileHover/whileTap for interactions.",
+        "For page transitions, wrap routes in <AnimatePresence>."
+      ],
+      "incompatible_with": [
+        "gsap (pick one motion library, don't mix)"
+      ]
+    },
+    "three": {
+      "ecosystem": "npm",
+      "version": "^0.184.0",
+      "categories": [
+        "frontend.3d"
+      ],
+      "install_dev": false,
+      "purpose": "WebGL 3D engine. Used as the underlying library; declarative usage via @react-three/fiber.",
+      "co_install": [
+        "@react-three/fiber",
+        "@react-three/drei"
+      ],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@react-three/fiber": {
+      "ecosystem": "npm",
+      "version": "^9",
+      "categories": [
+        "frontend.3d"
+      ],
+      "install_dev": false,
+      "purpose": "React renderer for three.js. Use <Canvas> + JSX-like 3D scene composition. Pick when a redesign wants hero/background 3D, interactive scenes, or particle/shader effects.",
+      "co_install": [
+        "three",
+        "@react-three/drei"
+      ],
+      "setup_steps": [
+        "npm install three @react-three/fiber @react-three/drei",
+        "Wrap 3D content in <Canvas> from @react-three/fiber.",
+        "Use @react-three/drei helpers (OrbitControls, Environment, Float, etc.) for common patterns."
+      ],
+      "incompatible_with": []
+    },
+    "@react-three/drei": {
+      "ecosystem": "npm",
+      "version": "^9",
+      "categories": [
+        "frontend.3d"
+      ],
+      "install_dev": false,
+      "purpose": "Helper components and hooks for @react-three/fiber (cameras, controls, loaders, postprocessing, etc.).",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@radix-ui/colors": {
+      "ecosystem": "npm",
+      "version": "^3",
+      "categories": [
+        "frontend.styling",
+        "frontend.theming"
+      ],
+      "install_dev": false,
+      "purpose": "Open-source color system designed for product design. 30+ paired scales (gray, mauve, slate, blue, red, etc.) each with 12 steps tuned for backgrounds / text / borders / interaction states / focus rings. Pick this over hand-picked hex values when a redesign wants a coherent palette beyond a single accent.",
+      "co_install": [],
+      "setup_steps": [
+        "npm install @radix-ui/colors",
+        "Import the scales you need (e.g. import { slate, blueDark } from '@radix-ui/colors';).",
+        "Map them onto CSS custom properties or Tailwind theme.extend.colors."
+      ],
+      "incompatible_with": []
+    },
+    "@radix-ui/react-dialog": {
+      "ecosystem": "npm",
+      "version": "^1",
+      "categories": [
+        "frontend.components"
+      ],
+      "install_dev": false,
+      "purpose": "Accessible modal dialog primitive. Use directly OR via shadcn's <Dialog> wrapper.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@radix-ui/react-dropdown-menu": {
+      "ecosystem": "npm",
+      "version": "^2",
+      "categories": [
+        "frontend.components"
+      ],
+      "install_dev": false,
+      "purpose": "Accessible dropdown menu primitive (keyboard nav, focus management). Use directly OR via shadcn's <DropdownMenu>.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@radix-ui/react-checkbox": {
+      "ecosystem": "npm",
+      "version": "^1",
+      "categories": [
+        "frontend.components",
+        "frontend.forms"
+      ],
+      "install_dev": false,
+      "purpose": "Accessible checkbox primitive. Use directly OR via shadcn's <Checkbox>.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@radix-ui/react-label": {
+      "ecosystem": "npm",
+      "version": "^2",
+      "categories": [
+        "frontend.components",
+        "frontend.forms"
+      ],
+      "install_dev": false,
+      "purpose": "Accessible <label> primitive that links to form controls.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@radix-ui/react-slot": {
+      "ecosystem": "npm",
+      "version": "^1",
+      "categories": [
+        "frontend.utilities"
+      ],
+      "install_dev": false,
+      "purpose": "Helper for shadcn-style component composition (asChild prop pattern). Pulled in implicitly when adding most shadcn components.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "@radix-ui/react-tooltip": {
+      "ecosystem": "npm",
+      "version": "^1",
+      "categories": [
+        "frontend.components"
+      ],
+      "install_dev": false,
+      "purpose": "Accessible tooltip primitive. Use directly OR via shadcn's <Tooltip>.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "next-themes": {
+      "ecosystem": "npm",
+      "version": "^0.4",
+      "categories": [
+        "frontend.theming"
+      ],
+      "install_dev": false,
+      "purpose": "Theme provider for React (works on CRA + Next.js + Vite). Handles dark/light toggle, persistence, system preference, and forced theme overrides. Pick when a redesign needs theme switching or system-aware dark mode. Skip when the design is single-theme.",
+      "co_install": [],
+      "setup_steps": [
+        "npm install next-themes",
+        "Wrap the app in <ThemeProvider attribute='class' defaultTheme='dark' enableSystem>.",
+        "Use useTheme() hook to read/write the current theme."
+      ],
+      "incompatible_with": []
+    },
+    "lucide-react": {
+      "ecosystem": "npm",
+      "version": "^0.545.0",
+      "categories": [
+        "frontend.icons"
+      ],
+      "install_dev": false,
+      "purpose": "Open-source icon set (1000+ icons, tree-shakeable React components). Already a dep on the warcraftlogs-tracker project; treat as default icon set across vault-managed frontends.",
+      "co_install": [],
+      "setup_steps": [
+        "npm install lucide-react",
+        "Import individual icons: import { Play, FolderOpen } from 'lucide-react';"
+      ],
+      "incompatible_with": []
+    },
+    "clsx": {
+      "ecosystem": "npm",
+      "version": "^2.1.1",
+      "categories": [
+        "frontend.utilities"
+      ],
+      "install_dev": false,
+      "purpose": "Tiny utility for conditional class-name composition. Pairs with tailwind-merge in the cn() helper.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "tailwind-merge": {
+      "ecosystem": "npm",
+      "version": "^3",
+      "categories": [
+        "frontend.utilities"
+      ],
+      "install_dev": false,
+      "purpose": "Merges Tailwind class-name conflicts intelligently (e.g. 'px-2 px-4' becomes 'px-4'). Required by shadcn's cn() helper.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "class-variance-authority": {
+      "ecosystem": "npm",
+      "version": "^0.7",
+      "categories": [
+        "frontend.utilities"
+      ],
+      "install_dev": false,
+      "purpose": "Variant prop pattern for component APIs (Button variant='solid' size='lg'). Used by shadcn components.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "react-hook-form": {
+      "ecosystem": "npm",
+      "version": "^7",
+      "categories": [
+        "frontend.forms"
+      ],
+      "install_dev": false,
+      "purpose": "Form state management with validation. Pick when a redesign touches form-heavy pages (auth, settings, multi-step flows). Skip for simple two-field forms.",
+      "co_install": [],
+      "setup_steps": [],
+      "incompatible_with": []
+    },
+    "recharts": {
+      "ecosystem": "npm",
+      "version": "^3.8.1",
+      "categories": [
+        "frontend.charts"
+      ],
+      "install_dev": false,
+      "purpose": "Declarative React charting library. Composable primitives (LineChart, BarChart, AreaChart, PieChart, Tooltip, Legend, etc.). Built-in animation, responsive containers, customizable via Tailwind/CSS. Pick this for damage breakdowns, time-series, comparisons, distributions in data tools and dashboards.",
+      "co_install": [],
+      "setup_steps": [
+        "npm install recharts",
+        "Wrap charts in <ResponsiveContainer width=\"100%\" height={H}> for layout.",
+        "Color series via the stroke/fill props; pull values from your design tokens for consistency.",
+        "Use the animationDuration prop to tune motion; disable with isAnimationActive={false} when chart updates are frequent."
+      ],
+      "incompatible_with": []
+    }
+  }
+}

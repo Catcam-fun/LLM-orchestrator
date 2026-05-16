@@ -1,0 +1,28 @@
+<!-- HUMAN-ONLY-START -->
+## Human-Only Notes
+
+> This block is enforced by self_test.py. Agents cannot modify content between
+> the HUMAN-ONLY-START and HUMAN-ONLY-END markers. Anything an agent writes
+> here gets reverted automatically + logged as a failure mode.
+>
+> Use this section for: design decisions you want to remember, preferences
+> agents should respect but might forget, TODOs you want to keep visible,
+> rationale for non-obvious choices, scratch notes.
+
+### Design preferences (human-curated)
+- Latency is NOT a routing factor — token efficiency + task quality are the priorities
+- Multi-agent collaboration is desired long-term but not yet built
+- The vault syncs via Obsidian Sync; runtime sqlite (`.state/`) does NOT sync — that's intentional (live state shouldn't move between machines mid-task)
+- API keys in `.env` are ONLY for free `/v1/models` listings — never for actual LLM work (subscription auth via CLIs is the rule)
+
+### Decisions worth remembering
+- `ai_runner` was removed 2026-05-04 — its single-shot use case wasn't being used
+- Removed cursor from model_pool — CLI not installed
+- Sharpener kept as standalone daemon (not migrated to LangGraph) — no benefit, would be busywork
+
+### Things to revisit eventually
+- Multi-agent decomposition (Phase 3)
+- A/B challenger runs (Phase 3)
+- Aider-style repo-map for richer code-edit context (Phase 3)
+- Live UI dashboard (deferred)
+<!-- HUMAN-ONLY-END -->

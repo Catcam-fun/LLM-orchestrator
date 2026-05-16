@@ -1,0 +1,27 @@
+{
+  "_comment": "Most recent working model per family per provider. Auto-updated periodically by `python scripts/probe_models.py --check-new` which queries each provider's /v1/models endpoint (free, no quota cost). Adding ANTHROPIC_API_KEY and GEMINI_API_KEY to env makes claude/gemini auto-discoverable too. Order is initial test order ONLY — quality ranking comes from logs/cost_log.jsonl via _routeModel.",
+  "_verified": "2026-05-03",
+  "_run_to_check_for_new_models": "python scripts/probe_models.py --check-new",
+  "_run_to_validate_pool_works": "python scripts/probe_models.py",
+  "providers": {
+    "claude": ["haiku", "sonnet", "opus", "claude-sonnet-4-6", "claude-opus-4-7"],
+    "gemini": [
+      "gemini-2.5-flash-lite",
+      "gemini-2.5-flash",
+      "gemini-2.5-pro",
+      "gemini-3-flash-preview"
+    ],
+    "codex": [
+      "gpt-5.5",
+      "gpt-5.5-pro",
+      "gpt-5.4-mini",
+      "gpt-5.4-nano",
+      "gpt-5.3-codex",
+      "gpt-5.3-chat-latest",
+      "gpt-5.1-codex-mini",
+      "gpt-5.1-codex-max",
+      "o3",
+      "o4-mini"
+    ]
+  }
+}

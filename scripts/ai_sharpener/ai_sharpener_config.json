@@ -1,0 +1,20 @@
+{
+  "sendAiRequests": true,
+  "providers": [
+    {
+      "provider": "claude",
+      "model": "variable"
+    },
+    {
+      "provider": "codex",
+      "model": "variable"
+    },
+    {
+      "provider": "gemini",
+      "model": "variable"
+    }
+  ],
+  "_model_variable_reason": "All three providers use 'variable' so _routeModel rotates across haiku/sonnet/opus, gpt-5-mini/gpt-5/o3, and gemini-flash-lite/flash/pro — gives real per-model performance data for the sharpener phase.",
+  "_provider_order_reason": "Alphabetical order to avoid biasing early sharpens before historical data accumulates. After enough runs _rankProviders re-orders by data-driven success rate.",
+  "_codex_note": "Codex enabled. Its CLI dumps session header garbage into stdout; the sharpener strips this via _stripCodexHeader() before parsing the response."
+}

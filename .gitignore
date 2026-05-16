@@ -1,0 +1,83 @@
+# API keys and credentials — NEVER commit
+.env
+.env.*
+*.key
+*.pem
+.credentials.json
+
+# Hooks scope (transient runtime state)
+scripts/hooks/.scope.json
+scripts/hooks/.scope.json.lock
+
+# PRIVATE — orchestrator-only zone (NEVER commit; contains personal notes, directives, session history)
+_human_notes/
+
+# PRIVATE — per-project agent memory (failures.md, charter.md, task_log.jsonl per project)
+# Synced cross-machine via Obsidian Sync, NOT git. Keeps user's project-specific
+# learnings out of the public LLM-orchestrator repo.
+.agent_memory/
+
+# Personal usage data — your lazy prompts, sharpened tasks, command trace,
+# rolling-memory accumulation, local Claude Code permission allow-list,
+# Obsidian UI state. Auto-regenerates as needed; cloners don't need yours.
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.obsidian/workspace.json
+.obsidian/bookmarks.json
+.obsidian/plugins/
+ai_instructions/prompts_brainstorm.md
+ai_instructions/prompts_staging.md
+ai_context/daily_summaries.md
+ai_context/failure_modes.md
+ai_context/model_performance.md
+ai_skills/_curation_log.jsonl
+
+# Task files — IGNORE THE WHOLE DIR by default to keep personal task
+# arcs (Human Answers sections, project-specific feedback) out of the
+# public repo. Curated showcase tasks below are explicitly un-ignored
+# to demonstrate the planning → execution → judge → learning loop end-to-end.
+task_files/*
+!task_files/.gitkeep
+!task_files/auto_0062.md
+!task_files/auto_0063.md
+!task_files/auto_0071.md
+!task_files/auto_0072.md
+!task_files/auto_0073.md
+
+# Runtime artifacts
+.backups/
+.state/
+logs/prompt_archive/
+logs/session_logs/
+logs/active_subprocesses.json
+logs/cost_log.jsonl
+logs/cost_log.jsonl.lock
+logs/cost_log.pre-cleanup.jsonl
+logs/routing_params.json
+logs/run_vault.err
+logs/run_vault.log
+logs/self_test.jsonl
+logs/events.jsonl
+logs/skill_usage.jsonl
+logs/verification_check_tags.jsonl
+.ai_dougs_dougid_counter
+
+# Daily process logs (rotation policy handles archive/delete)
+logs/daemon_*.log
+logs/sharpener_*.log
+
+# Python build noise
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
+*~
